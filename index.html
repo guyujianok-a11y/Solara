@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -43,6 +44,7 @@
                 const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
                 document.documentElement.style.setProperty("--mobile-vh", `${viewportHeight}px`);
             };
+
             const applyBodyClass = () => {
                 if (document.body) {
                     document.body.classList.add("mobile-view");
@@ -54,12 +56,14 @@
             } else {
                 applyBodyClass();
             }
+
             window.addEventListener("resize", setViewportUnit);
             window.addEventListener("orientationchange", setViewportUnit);
             if (window.visualViewport) {
                 window.visualViewport.addEventListener("resize", setViewportUnit);
                 window.visualViewport.addEventListener("scroll", setViewportUnit);
             }
+
             setViewportUnit();
         })();
     </script>
@@ -87,73 +91,38 @@
                 --mobile-vh: 100dvh;
             }
         }
-    </style>
-    <style>
-        /* ==========新增全局样式========== */
-        /* 随机背景层，最底层 */
-        .random-bg-wallpaper{
-            position: fixed;
-            inset:0;
-            z-index:-2;
+
+        /* === 时间日期显示 === */
+        .header-time {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-top: 4px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.88);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+            user-select: none;
+        }
+        #headerDate, #headerTimeText {
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+        #headerTimeText::before {
+            content: "  |  ";
+            color: rgba(255, 255, 255, 0.5);
+        }
+        @media (max-width: 820px) {
+            .header-time {
+                font-size: 12px;
+                gap: 10px;
+            }
+        }
+        /* === 全局随机壁纸 === */
+        .background-stage__layer--base {
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
-            filter: brightness(0.3);
-            /* 增加初始背景，防止空白一瞬间 */
-            background-color:#000;
-        }
-        /* 遮罩，保证文字可读 */
-        .bg-mask{
-            position: fixed;
-            inset:0;
-            z-index:-1;
-            background:rgba(0,0,0,0.45);
-        }
-        /* 时间日期组件 */
-        .datetime-box{
-            position: fixed;
-            top:12px;
-            right:16px;
-            z-index:99;
-            color:#ffffff;
-            text-align:right;
-            font-family:"Noto Sans SC",sans-serif;
-            text-shadow: 0 0 8px rgba(0,0,0,0.7);
-            user-select:none;
-        }
-        .datetime-date{
-            font-size:14px;
-            opacity:0.85;
-        }
-        .datetime-time{
-            font-size:24px;
-            font-weight:500;
-        }
-        @media (max-width:820px){
-            .datetime-box{
-                top:8px;
-                right:10px;
-            }
-            .datetime-time{
-                font-size:18px;
-            }
-            .datetime-date{
-                font-size:11px;
-            }
-        }
-        /* 全局飘动欢迎文字，增加初始位置 */
-        .float-welcome{
-            position:fixed;
-            z-index:10;
-            pointer-events:none;
-            color:#fff;
-            font-size:22px;
-            font-weight:bold;
-            text-shadow:0 0 12px #7c3aed,0 0 22px #4f46e5;
-            white-space:nowrap;
-            user-select:none;
-            left:10px;
-            top:10px;
         }
     </style>
     <script>
@@ -163,18 +132,9 @@
             window.addEventListener("orientationchange", fixMobileVH);
         })();
     </script>
+
 </head>
 <body>
-    <!-- 随机壁纸背景层 -->
-    <div class="random-bg-wallpaper" id="randomBg"></div>
-    <div class="bg-mask"></div>
-    <!-- 时间日期 -->
-    <div class="datetime-box" id="datetimeBox">
-        <div class="datetime-date" id="dateText"></div>
-        <div class="datetime-time" id="timeText"></div>
-    </div>
-    <!-- 飘动欢迎文字 -->
-    <div class="float-welcome" id="floatWelcome">✨欢迎光临✨</div>
     <div class="background-stage" id="backgroundStage" aria-hidden="true">
         <div class="background-stage__layer background-stage__layer--base" id="backgroundBaseLayer"></div>
         <div class="background-stage__layer background-stage__layer--transition" id="backgroundTransitionLayer"></div>
@@ -193,6 +153,10 @@
         </div>
         <div class="header">
             <h1>想听啥？搜表孙歌名就行了！真难揍！</h1>
+            <div class="header-time" id="headerTime">
+                <span id="headerDate"></span>
+                <span id="headerTimeText"></span>
+            </div>
             <div class="warning">Made by Wet Dream Boy，免费API来自GD音乐台(music.gdstudio.xyz)，仅供学习交流使用，请支持正版音乐奥！</div>
             <div class="header-left-controls">
                 <button id="themeToggleButton" class="theme-toggle-button" type="button" aria-label="切换深浅色模式">
@@ -206,6 +170,7 @@
                 </button>
             </div>
         </div>
+
         <div class="search-area" id="searchArea">
             <div class="search-header">
                 <h2 class="search-title">探索音乐</h2>
@@ -250,6 +215,7 @@
                 <div id="searchResultsList" class="search-results-list"></div>
             </div>
         </div>
+
         <div class="main-content">
             <div class="cover-area">
                 <div class="mobile-turntable" id="mobileTurntable">
@@ -290,6 +256,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="mobile-panel" id="mobilePanel">
                 <div class="mobile-panel-header" id="mobilePanelHeader">
                     <div class="mobile-panel-handle" aria-hidden="true"></div>
@@ -395,6 +362,7 @@
                         </button>
                     </div>
                 </div>
+
                 <div class="playlist active empty" id="playlist" role="tabpanel" aria-labelledby="playlistTab">
                     <div class="playlist-header">
                         <div class="playlist-tabs" role="tablist">
@@ -534,6 +502,7 @@
                 </div>
             </div>
         </div>
+
         <div class="controls">
             <div class="transport-controls">
                 <button class="play-mode-btn transport-button transport-button--mode" id="playModeBtn" type="button" title="播放模式">
@@ -570,8 +539,11 @@
             </div>
         </div>
     </div>
+
     <div class="mobile-overlay-scrim" id="mobileOverlayScrim"></div>
-    <audio id="audioPlayer" preload="metadata" playsinline>
+
+    <audio id="audioPlayer" preload="metadata" playsinline></audio>
+
 <!-- 设置模态框 -->
 <div id="settingsModal" class="modal-overlay" aria-hidden="true">
     <div class="modal-content settings-content">
@@ -595,93 +567,15 @@
         </div>
     </div>
 </div>
+
 <!-- 通知容器 -->
 <div id="notification" class="notification"></div>
+
 <!-- 调试信息容器 -->
 <div id="debugInfo" class="debug-info"></div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/index.js"></script>
-<script>
-// ===================== JS新增功能【修复完整版】 =====================
-//壁纸池，自行替换图片链接
-const bgWallpaperList = [
-    "https://picsum.photos/id/1004/1920/1080",
-    "https://picsum.photos/id/1008/1920/1080",
-    "https://picsum.photos/id/1011/1920/1080",
-    "https://picsum.photos/id/1015/1920/1080",
-    "https://picsum.photos/id/1019/1920/1080",
-    "https://picsum.photos/id/1035/1920/1080"
-];
-// 【可选】定时自动切换壁纸，单位毫秒，30000=30秒，不需要自动切换就注释掉这行
-const AUTO_CHANGE_INTERVAL = 30000;
-
-//设置壁纸函数，加时间戳破除缓存
-function setRandomWallpaper(){
-    const bgDom = document.getElementById("randomBg");
-    if(!bgDom) return;
-    const randomIdx = Math.floor(Math.random() * bgWallpaperList.length);
-    //拼接时间戳，强制不读浏览器缓存
-    const url = bgWallpaperList[randomIdx] + "?_t=" + Date.now();
-    bgDom.style.backgroundImage = `url(${url})`;
-}
-
-//DOM全部加载完毕后执行，防止元素未渲染
-document.addEventListener("DOMContentLoaded",function(){
-    //初始化壁纸
-    setRandomWallpaper();
-
-    //开启定时自动换壁纸
-    if(typeof AUTO_CHANGE_INTERVAL !== "undefined"){
-        setInterval(setRandomWallpaper, AUTO_CHANGE_INTERVAL);
-    }
-
-    // 1.时间日期
-    function updateDateTime(){
-        const dateEl = document.getElementById("dateText");
-        const timeEl = document.getElementById("timeText");
-        if(!dateEl || !timeEl) return;
-        const now = new Date();
-        const weekArr = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
-        const y = now.getFullYear();
-        const m = String(now.getMonth()+1).padStart(2,"0");
-        const d = String(now.getDate()).padStart(2,"0");
-        const w = weekArr[now.getDay()];
-        const h = String(now.getHours()).padStart(2,"0");
-        const mi = String(now.getMinutes()).padStart(2,"0");
-        const s = String(now.getSeconds()).padStart(2,"0");
-        dateEl.innerText = `${y}年${m}月${d}日 ${w}`;
-        timeEl.innerText = `${h}:${mi}:${s}`;
-    }
-    updateDateTime();
-    setInterval(updateDateTime,1000);
-
-    //2.弹跳飘动文字
-    const floatDom = document.getElementById("floatWelcome");
-    if(!floatDom) return;
-    let x = Math.random() * (window.innerWidth - 220);
-    let y = Math.random() * (window.innerHeight - 80);
-    let vx = 1.2;
-    let vy = 0.9;
-    floatDom.style.left = x + "px";
-    floatDom.style.top = y + "px";
-
-    function floatAnimate(){
-        x += vx;
-        y += vy;
-        if(x <=0 || x >= window.innerWidth - 200) vx = -vx;
-        if(y <=0 || y >= window.innerHeight -40) vy = -vy;
-        floatDom.style.left = x + "px";
-        floatDom.style.top = y + "px";
-        requestAnimationFrame(floatAnimate);
-    }
-    floatAnimate();
-
-    window.addEventListener("resize",()=>{
-        x = Math.min(x, window.innerWidth -200);
-        y = Math.min(y, window.innerHeight -40);
-    })
-});
-</script>
 <script>
     if (window.__SOLARA_IS_MOBILE) {
         const mobileScript = document.createElement('script');
@@ -691,5 +585,40 @@ document.addEventListener("DOMContentLoaded",function(){
         document.body.appendChild(mobileScript);
     }
 </script>
+    <script>
+        // === 时间日期显示（每秒更新） ===
+        (function updateTime() {
+            var now = new Date();
+            var dateOpts = { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'long' };
+            var timeOpts = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            var dateStr = now.toLocaleDateString('zh-CN', dateOpts);
+            var timeStr = now.toLocaleTimeString('zh-CN', timeOpts);
+            var dateEl = document.getElementById('headerDate');
+            var timeEl = document.getElementById('headerTimeText');
+            if (dateEl) dateEl.textContent = dateStr;
+            if (timeEl) timeEl.textContent = timeStr;
+        })();
+        setInterval(function () {
+            updateTime();
+        }, 1000);
+
+        // === 全局随机壁纸（每次加载页面随机选取一张高清壁纸） ===
+        (function setRandomWallpaper() {
+            var seed = Date.now() + Math.random() * 100000;
+            var imgUrl = 'https://picsum.photos/1920/1080?random=' + seed;
+            var baseLayer = document.getElementById('backgroundBaseLayer');
+            if (baseLayer) {
+                var img = new Image();
+                img.onload = function () {
+                    baseLayer.style.backgroundImage = 'url("' + imgUrl + '")';
+                };
+                img.onerror = function () {
+                    // 图片加载失败时不显示壁纸，保持原有样式
+                    console.warn('壁纸加载失败，已忽略。');
+                };
+                img.src = imgUrl;
+            }
+        })();
+    </script>
 </body>
 </html>

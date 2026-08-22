@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -129,14 +130,16 @@
         /* === 全局飘动Logo === */
         .floating-logo {
             position: fixed;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(123, 104, 238, 0.8), 0 0 20px rgba(123, 104, 238, 0.5), 0 2px 8px rgba(0, 0, 0, 0.4);
+            white-space: nowrap;
             pointer-events: none;
             z-index: 9999;
-            opacity: 0.85;
+            opacity: 0.9;
             animation: floatLogo 18s ease-in-out infinite;
+            user-select: none;
         }
         @keyframes floatLogo {
             0% {
@@ -652,6 +655,6 @@
         })();
     </script>
     <!-- 全局飘动Logo -->
-    <img src="https://gips3.baidu.com/it/u=3708540053,2380316491&fm=3074&app=3074&f=PNG?w=2048&h=2048" alt="Logo" class="floating-logo" id="floatingLogo">
+    <div class="floating-logo" id="floatingLogo">欢迎TM来听歌</div>
 </body>
 </html>

@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -123,6 +124,36 @@
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
+        }
+    
+        /* === 全局飘动Logo === */
+        .floating-logo {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.85;
+            animation: floatLogo 18s ease-in-out infinite;
+        }
+        @keyframes floatLogo {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(calc(100vw - 100px), calc(20vh - 40px)) rotate(90deg);
+            }
+            50% {
+                transform: translate(calc(50vw - 40px), calc(80vh - 40px)) rotate(180deg);
+            }
+            75% {
+                transform: translate(calc(10vw - 40px), calc(40vh - 40px)) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
         }
     </style>
     <script>
@@ -620,5 +651,7 @@
             }
         })();
     </script>
+    <!-- 全局飘动Logo -->
+    <img src="https://www.pc528.net/logo.png" alt="Logo" class="floating-logo" id="floatingLogo">
 </body>
 </html>

@@ -99,6 +99,8 @@
             background-position: center center;
             background-repeat: no-repeat;
             filter: brightness(0.3);
+            /* 增加初始背景，防止空白一瞬间 */
+            background-color:#000;
         }
         /* 遮罩，保证文字可读 */
         .bg-mask{
@@ -139,7 +141,7 @@
                 font-size:11px;
             }
         }
-        /* 全局飘动欢迎文字 */
+        /* 全局飘动欢迎文字，增加初始位置 */
         .float-welcome{
             position:fixed;
             z-index:10;
@@ -150,6 +152,8 @@
             text-shadow:0 0 12px #7c3aed,0 0 22px #4f46e5;
             white-space:nowrap;
             user-select:none;
+            left:10px;
+            top:10px;
         }
     </style>
     <script>
@@ -164,16 +168,13 @@
     <!-- 随机壁纸背景层 -->
     <div class="random-bg-wallpaper" id="randomBg"></div>
     <div class="bg-mask"></div>
-
     <!-- 时间日期 -->
     <div class="datetime-box" id="datetimeBox">
         <div class="datetime-date" id="dateText"></div>
         <div class="datetime-time" id="timeText"></div>
     </div>
-
     <!-- 飘动欢迎文字 -->
     <div class="float-welcome" id="floatWelcome">✨欢迎光临✨</div>
-
     <div class="background-stage" id="backgroundStage" aria-hidden="true">
         <div class="background-stage__layer background-stage__layer--base" id="backgroundBaseLayer"></div>
         <div class="background-stage__layer background-stage__layer--transition" id="backgroundTransitionLayer"></div>
@@ -600,10 +601,9 @@
 <div id="debugInfo" class="debug-info"></div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/index.js"></script>
-
 <script>
-// ===================== JS新增功能 =====================
-//1.随机壁纸数组，可以自行替换图片链接
+// ===================== JS新增功能【修复完整版】 =====================
+//壁纸池，自行替换图片链接
 const bgWallpaperList = [
     "https://picsum.photos/id/1004/1920/1080",
     "https://picsum.photos/id/1008/1920/1080",
@@ -612,57 +612,76 @@ const bgWallpaperList = [
     "https://picsum.photos/id/1019/1920/1080",
     "https://picsum.photos/id/1035/1920/1080"
 ];
-//页面加载随机选一张
-(function setRandomBg(){
+// 【可选】定时自动切换壁纸，单位毫秒，30000=30秒，不需要自动切换就注释掉这行
+const AUTO_CHANGE_INTERVAL = 30000;
+
+//设置壁纸函数，加时间戳破除缓存
+function setRandomWallpaper(){
     const bgDom = document.getElementById("randomBg");
+    if(!bgDom) return;
     const randomIdx = Math.floor(Math.random() * bgWallpaperList.length);
-    bgDom.style.backgroundImage = `url(${bgWallpaperList[randomIdx]})`;
-})();
-
-//2.实时时间日期
-function updateDateTime(){
-    const now = new Date();
-    const weekArr = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
-    const y = now.getFullYear();
-    const m = String(now.getMonth()+1).padStart(2,"0");
-    const d = String(now.getDate()).padStart(2,"0");
-    const w = weekArr[now.getDay()];
-    const h = String(now.getHours()).padStart(2,"0");
-    const mi = String(now.getMinutes()).padStart(2,"0");
-    const s = String(now.getSeconds()).padStart(2,"0");
-
-    document.getElementById("dateText").innerText = `${y}年${m}月${d}日 ${w}`;
-    document.getElementById("timeText").innerText = `${h}:${mi}:${s}`;
+    //拼接时间戳，强制不读浏览器缓存
+    const url = bgWallpaperList[randomIdx] + "?_t=" + Date.now();
+    bgDom.style.backgroundImage = `url(${url})`;
 }
-updateDateTime();
-setInterval(updateDateTime,1000);
 
-//3.全局弹跳飘动欢迎文字
-const floatDom = document.getElementById("floatWelcome");
-let x = Math.random() * (window.innerWidth - 220);
-let y = Math.random() * (window.innerHeight - 80);
-let vx = 1.2;
-let vy = 0.9;
+//DOM全部加载完毕后执行，防止元素未渲染
+document.addEventListener("DOMContentLoaded",function(){
+    //初始化壁纸
+    setRandomWallpaper();
 
-function floatAnimate(){
-    x += vx;
-    y += vy;
-    //边界反弹
-    if(x <=0 || x >= window.innerWidth - 200) vx = -vx;
-    if(y <=0 || y >= window.innerHeight -40) vy = -vy;
+    //开启定时自动换壁纸
+    if(typeof AUTO_CHANGE_INTERVAL !== "undefined"){
+        setInterval(setRandomWallpaper, AUTO_CHANGE_INTERVAL);
+    }
 
+    // 1.时间日期
+    function updateDateTime(){
+        const dateEl = document.getElementById("dateText");
+        const timeEl = document.getElementById("timeText");
+        if(!dateEl || !timeEl) return;
+        const now = new Date();
+        const weekArr = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+        const y = now.getFullYear();
+        const m = String(now.getMonth()+1).padStart(2,"0");
+        const d = String(now.getDate()).padStart(2,"0");
+        const w = weekArr[now.getDay()];
+        const h = String(now.getHours()).padStart(2,"0");
+        const mi = String(now.getMinutes()).padStart(2,"0");
+        const s = String(now.getSeconds()).padStart(2,"0");
+        dateEl.innerText = `${y}年${m}月${d}日 ${w}`;
+        timeEl.innerText = `${h}:${mi}:${s}`;
+    }
+    updateDateTime();
+    setInterval(updateDateTime,1000);
+
+    //2.弹跳飘动文字
+    const floatDom = document.getElementById("floatWelcome");
+    if(!floatDom) return;
+    let x = Math.random() * (window.innerWidth - 220);
+    let y = Math.random() * (window.innerHeight - 80);
+    let vx = 1.2;
+    let vy = 0.9;
     floatDom.style.left = x + "px";
     floatDom.style.top = y + "px";
-    requestAnimationFrame(floatAnimate);
-}
-floatAnimate();
 
-window.addEventListener("resize",()=>{
-    x = Math.min(x, window.innerWidth -200);
-    y = Math.min(y, window.innerHeight -40);
-})
+    function floatAnimate(){
+        x += vx;
+        y += vy;
+        if(x <=0 || x >= window.innerWidth - 200) vx = -vx;
+        if(y <=0 || y >= window.innerHeight -40) vy = -vy;
+        floatDom.style.left = x + "px";
+        floatDom.style.top = y + "px";
+        requestAnimationFrame(floatAnimate);
+    }
+    floatAnimate();
+
+    window.addEventListener("resize",()=>{
+        x = Math.min(x, window.innerWidth -200);
+        y = Math.min(y, window.innerHeight -40);
+    })
+});
 </script>
-
 <script>
     if (window.__SOLARA_IS_MOBILE) {
         const mobileScript = document.createElement('script');

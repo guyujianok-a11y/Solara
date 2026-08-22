@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -127,7 +128,7 @@
             background-repeat: no-repeat;
         }
     
-        /* === 全局飘动Logo === */
+        /* === 全局碰撞回弹Logo（JS控制） === */
         .floating-logo {
             position: fixed;
             font-size: 16px;
@@ -138,25 +139,8 @@
             pointer-events: none;
             z-index: 9999;
             opacity: 0.9;
-            animation: floatLogo 18s ease-in-out infinite;
             user-select: none;
-        }
-        @keyframes floatLogo {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            25% {
-                transform: translate(calc(100vw - 100px), calc(20vh - 40px)) rotate(90deg);
-            }
-            50% {
-                transform: translate(calc(50vw - 40px), calc(80vh - 40px)) rotate(180deg);
-            }
-            75% {
-                transform: translate(calc(10vw - 40px), calc(40vh - 40px)) rotate(270deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(360deg);
-            }
+            transition: color 0.6s ease;
         }
     </style>
     <script>
@@ -655,6 +639,6 @@
         })();
     </script>
     <!-- 全局飘动Logo -->
-    <div class="floating-logo" id="floatingLogo">欢迎TM来听歌</div>
+    <div class="floating-logo" id="floatingLogo">表孙来听歌了</div>
 </body>
 </html>

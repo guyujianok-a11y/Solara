@@ -1,0 +1,11 @@
+name = "solara"
+compatibility_date = "2026-08-20"
+
+# 告诉 Cloudflare 这是一个纯静态页面项目，而不是 Worker 脚本
+[assets]
+directory = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "solara"
+database_id = "5be84120-87b9-453a-88e3-642899f0b8b4" # 替换为你的真实 ID

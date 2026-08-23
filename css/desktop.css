@@ -10,7 +10,6 @@ html.desktop-view .mobile-turntable__label,
 html.desktop-view .mobile-inline-lyrics {
     display: none;
 }
-
 /* Remove circular decoration from playlist action buttons on desktop */
 html.desktop-view .playlist-action-btn {
     width: auto;
@@ -23,14 +22,12 @@ html.desktop-view .playlist-action-btn {
     color: var(--text-secondary-color);
     transition: color 0.2s ease;
 }
-
 html.desktop-view body.dark-mode .playlist-action-btn {
     background: none;
     border: none;
     box-shadow: none;
     color: var(--text-secondary-color);
 }
-
 html.desktop-view .playlist-action-btn:hover:not(:disabled),
 html.desktop-view .playlist-action-btn:focus-visible:not(:disabled) {
     transform: none;
@@ -39,33 +36,26 @@ html.desktop-view .playlist-action-btn:focus-visible:not(:disabled) {
     border: none;
     color: var(--primary-color);
 }
-
 html.desktop-view .playlist-action-btn--clear {
     color: rgba(231, 76, 60, 0.85);
 }
-
 html.desktop-view .playlist-action-btn--clear:hover:not(:disabled),
 html.desktop-view .playlist-action-btn--clear:focus-visible:not(:disabled) {
     color: var(--warning-color);
 }
-
 html.desktop-view .playlist-action-btn:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
-
 html.desktop-view .playlist-action-btn:disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
-
 /* ===== 桌面端：导入已选按钮 - 独立定位，不影响搜索栏布局 ===== */
-
 /* 默认隐藏，仅在搜索模式下显示 */
 html.desktop-view .search-results-toolbar {
     display: none;
 }
-
 /* search-controls-wrapper 已有 position:relative，toolbar absolute 定位以它为锚 */
 html.desktop-view .container.search-mode .search-results-toolbar {
     display: block;
@@ -82,11 +72,9 @@ html.desktop-view .container.search-mode .search-results-toolbar {
     flex-shrink: unset;
     padding: 0;
 }
-
 html.desktop-view .search-results-toolbar .import-dropdown {
     width: auto;             /* 重置移动端 width:100% */
 }
-
 html.desktop-view .search-results-toolbar .import-selected-btn {
     width: auto;             /* 重置移动端 width:100% */
     justify-content: unset;  /* 重置移动端居中 */
@@ -94,12 +82,26 @@ html.desktop-view .search-results-toolbar .import-selected-btn {
     padding: 8px 16px;
     font-size: 14px;
 }
-
 /* 搜索结果列表留出顶部空间，避免第一条结果被按钮遮挡 */
 html.desktop-view .search-results-list {
     padding-top: 52px;
 }
-
 html.desktop-view .search-results {
     gap: 0;
 }
+
+/* ==========桌面端：歌词模块与播放列表模块位置对调【新增】========== */
+html.desktop-view .main-content {
+    display: flex;
+    flex-direction: column;
+}
+html.desktop-view .main-content .cover-area {
+    order: 1;
+}
+html.desktop-view .main-content #lyrics {
+    order: 2;
+}
+html.desktop-view .main-content .mobile-panel {
+    order: 3;
+}
+/* ================================================================= */

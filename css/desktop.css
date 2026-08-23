@@ -123,3 +123,18 @@ html.desktop-view .main-content .mobile-panel {
     order: 3;
 }
 /* ============================================================= */
+/* 桌面三栏：播放列表 ↔ 歌词面板左右互换 */
+html.desktop-view .main-content {
+    display: flex !important;
+    flex-direction: row !important;
+}
+html.desktop-view .main-content .cover-area {
+    order: 1;
+}
+html.desktop-view .main-content .mobile-panel {
+    order: 3;
+}
+html.desktop-view .main-content #lyrics {
+    order: 2;
+}
+

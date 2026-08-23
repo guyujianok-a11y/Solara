@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -43,6 +47,7 @@
                 const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
                 document.documentElement.style.setProperty("--mobile-vh", `${viewportHeight}px`);
             };
+
             const applyBodyClass = () => {
                 if (document.body) {
                     document.body.classList.add("mobile-view");
@@ -54,12 +59,14 @@
             } else {
                 applyBodyClass();
             }
+
             window.addEventListener("resize", setViewportUnit);
             window.addEventListener("orientationchange", setViewportUnit);
             if (window.visualViewport) {
                 window.visualViewport.addEventListener("resize", setViewportUnit);
                 window.visualViewport.addEventListener("scroll", setViewportUnit);
             }
+
             setViewportUnit();
         })();
     </script>
@@ -87,6 +94,7 @@
                 --mobile-vh: 100dvh;
             }
         }
+
         /* === 时间日期显示 === */
         .header-time {
             display: flex;
@@ -159,6 +167,7 @@
             window.addEventListener("orientationchange", fixMobileVH);
         })();
     </script>
+
 </head>
 <body>
     <div class="background-stage" id="backgroundStage" aria-hidden="true">
@@ -196,6 +205,7 @@
                 </button>
             </div>
         </div>
+
         <div class="search-area" id="searchArea">
             <div class="search-header">
                 <h2 class="search-title">探索音乐</h2>
@@ -240,6 +250,7 @@
                 <div id="searchResultsList" class="search-results-list"></div>
             </div>
         </div>
+
         <div class="main-content">
             <div class="cover-area">
                 <div class="mobile-turntable" id="mobileTurntable">
@@ -278,13 +289,6 @@
                         <span id="mobileQualityLabel">极高音质</span>
                         <i class="fas fa-chevron-down" aria-hidden="true"></i>
                     </button>
-                </div>
-            </div>
-
-            <!-- ========= 调换顺序：歌词放上面，mobile‑panel（播放列表）放下面 ========= -->
-            <div class="lyrics empty" id="lyrics" data-placeholder="default">
-                <div class="lyrics-scroll" id="lyricsScroll">
-                    <div class="lyrics-content" id="lyricsContent"></div>
                 </div>
             </div>
 
@@ -393,6 +397,7 @@
                         </button>
                     </div>
                 </div>
+
                 <div class="playlist active empty" id="playlist" role="tabpanel" aria-labelledby="playlistTab">
                     <div class="playlist-header">
                         <div class="playlist-tabs" role="tablist">
@@ -525,8 +530,14 @@
                         <div class="playlist-items" id="favoriteItems"></div>
                     </div>
                 </div>
+                <div class="lyrics empty" id="lyrics" data-placeholder="default">
+                    <div class="lyrics-scroll" id="lyricsScroll">
+                        <div class="lyrics-content" id="lyricsContent"></div>
+                    </div>
+                </div>
             </div>
         </div>
+
         <div class="controls">
             <div class="transport-controls">
                 <button class="play-mode-btn transport-button transport-button--mode" id="playModeBtn" type="button" title="播放模式">
@@ -563,8 +574,11 @@
             </div>
         </div>
     </div>
+
     <div class="mobile-overlay-scrim" id="mobileOverlayScrim"></div>
-    <audio id="audioPlayer" preload="metadata" playsinline>
+
+    <audio id="audioPlayer" preload="metadata" playsinline></audio>
+
 <!-- 设置模态框 -->
 <div id="settingsModal" class="modal-overlay" aria-hidden="true">
     <div class="modal-content settings-content">
@@ -588,10 +602,13 @@
         </div>
     </div>
 </div>
+
 <!-- 通知容器 -->
 <div id="notification" class="notification"></div>
+
 <!-- 调试信息容器 -->
 <div id="debugInfo" class="debug-info"></div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/index.js"></script>
 <script>
@@ -619,6 +636,7 @@
         setInterval(function () {
             updateTime();
         }, 1000);
+
         // === 全局随机壁纸（每次加载页面随机选取一张高清壁纸） ===
         (function setRandomWallpaper() {
             var seed = Date.now() + Math.random() * 100000;

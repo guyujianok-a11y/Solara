@@ -105,3 +105,21 @@ html.desktop-view .main-content .mobile-panel {
     order: 3;
 }
 /* ================================================================= */
+/* ==========桌面端：歌词模块与播放列表模块位置对调 新增========== */
+html.desktop-view .main-content {
+    display: flex;
+    flex-direction: column;
+}
+/* 封面区域顺序保持第1 */
+html.desktop-view .main-content .cover-area {
+    order: 1;
+}
+/* 歌词模块#lyrics放到第2位（原来播放列表位置） */
+html.desktop-view .main-content #lyrics {
+    order: 2;
+}
+/* mobile‑panel（播放/收藏列表）放到第3位（原来歌词位置） */
+html.desktop-view .main-content .mobile-panel {
+    order: 3;
+}
+/* ============================================================= */

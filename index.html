@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>听个表孙歌熊歌，就那么费劲吗？</title>
+    <title>听个逼养的歌真难</title>
     <meta name="apple-mobile-web-app-title" content="Solara">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
@@ -17,27 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/i18n.js"></script>
-    <style>
-        /* ==========新增：时间显示样式 ========== */
-        .clock-date-time{
-            color:#eee;
-            font-size:14px;
-            margin:6px 0;
-            text-shadow: 0 0 6px #00000080;
-        }
-
-        /* ==========新增：全屏飘动头像 ========== */
-        #floatAvatar{
-            position:fixed;
-            width:80px;
-            height:80px;
-            border-radius:50%;
-            object-fit:cover;
-            z-index:999;
-            pointer-events:none;
-            box-shadow:0 0 12px rgba(255,255,255,0.35);
-        }
-    </style>
     <script>
         (function () {
             const ua = navigator.userAgent || "";
@@ -64,6 +43,7 @@
                 const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
                 document.documentElement.style.setProperty("--mobile-vh", `${viewportHeight}px`);
             };
+
             const applyBodyClass = () => {
                 if (document.body) {
                     document.body.classList.add("mobile-view");
@@ -75,12 +55,14 @@
             } else {
                 applyBodyClass();
             }
+
             window.addEventListener("resize", setViewportUnit);
             window.addEventListener("orientationchange", setViewportUnit);
             if (window.visualViewport) {
                 window.visualViewport.addEventListener("resize", setViewportUnit);
                 window.visualViewport.addEventListener("scroll", setViewportUnit);
             }
+
             setViewportUnit();
         })();
     </script>
@@ -116,11 +98,9 @@
             window.addEventListener("orientationchange", fixMobileVH);
         })();
     </script>
+
 </head>
 <body>
-    <!-- 飘动头像DOM -->
-    <img id="floatAvatar" src="https://picsum.photos/100/100" alt="飘动头像">
-
     <div class="background-stage" id="backgroundStage" aria-hidden="true">
         <div class="background-stage__layer background-stage__layer--base" id="backgroundBaseLayer"></div>
         <div class="background-stage__layer background-stage__layer--transition" id="backgroundTransitionLayer"></div>
@@ -138,10 +118,7 @@
             </div>
         </div>
         <div class="header">
-            <h1>想听啥？搜表孙歌名就行了！真难揍！</h1>
-            <!-- 北京时间显示 -->
-            <div class="clock-date-time" id="bjTimeBox"></div>
-
+            <h1>Solara</h1>
             <div class="warning">Made by Wet Dream Boy，免费API来自GD音乐台(music.gdstudio.xyz)，仅供学习交流使用，请支持正版音乐奥！</div>
             <div class="header-left-controls">
                 <button id="themeToggleButton" class="theme-toggle-button" type="button" aria-label="切换深浅色模式">
@@ -155,6 +132,7 @@
                 </button>
             </div>
         </div>
+
         <div class="search-area" id="searchArea">
             <div class="search-header">
                 <h2 class="search-title">探索音乐</h2>
@@ -199,6 +177,7 @@
                 <div id="searchResultsList" class="search-results-list"></div>
             </div>
         </div>
+
         <div class="main-content">
             <div class="cover-area">
                 <div class="mobile-turntable" id="mobileTurntable">
@@ -239,6 +218,7 @@
                     </button>
                 </div>
             </div>
+
             <div class="mobile-panel" id="mobilePanel">
                 <div class="mobile-panel-header" id="mobilePanelHeader">
                     <div class="mobile-panel-handle" aria-hidden="true"></div>
@@ -344,6 +324,7 @@
                         </button>
                     </div>
                 </div>
+
                 <div class="playlist active empty" id="playlist" role="tabpanel" aria-labelledby="playlistTab">
                     <div class="playlist-header">
                         <div class="playlist-tabs" role="tablist">
@@ -483,6 +464,7 @@
                 </div>
             </div>
         </div>
+
         <div class="controls">
             <div class="transport-controls">
                 <button class="play-mode-btn transport-button transport-button--mode" id="playModeBtn" type="button" title="播放模式">
@@ -519,8 +501,11 @@
             </div>
         </div>
     </div>
+
     <div class="mobile-overlay-scrim" id="mobileOverlayScrim"></div>
-    <audio id="audioPlayer" preload="metadata" playsinline>
+
+    <audio id="audioPlayer" preload="metadata" playsinline></audio>
+
 <!-- 设置模态框 -->
 <div id="settingsModal" class="modal-overlay" aria-hidden="true">
     <div class="modal-content settings-content">
@@ -544,10 +529,13 @@
         </div>
     </div>
 </div>
+
 <!-- 通知容器 -->
 <div id="notification" class="notification"></div>
+
 <!-- 调试信息容器 -->
 <div id="debugInfo" class="debug-info"></div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="js/index.js"></script>
 <script>
@@ -558,58 +546,6 @@
         mobileScript.defer = false;
         document.body.appendChild(mobileScript);
     }
-
-    // ===================== 1、北京时间 年月日星期 =====================
-    function updateBeijingTime(){
-        const now = new Date();
-        const weekArr=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
-        const y=now.getFullYear();
-        const m=String(now.getMonth()+1).padStart(2,"0");
-        const d=String(now.getDate()).padStart(2,"0");
-        const w=weekArr[now.getDay()];
-        const h=String(now.getHours()).padStart(2,"0");
-        const mi=String(now.getMinutes()).padStart(2,"0");
-        const s=String(now.getSeconds()).padStart(2,"0");
-        document.getElementById("bjTimeBox").innerText=`北京时间：${y}年${m}月${d}日 ${w} ${h}:${mi}:${s}`;
-    }
-    updateBeijingTime();
-    setInterval(updateBeijingTime,1000);
-
-    // ===================== 2、页面飘动头像 碰到边界反弹 =====================
-    const floatAvatar = document.getElementById("floatAvatar");
-    // 修改这里换成你的头像地址
-    // floatAvatar.src = "https://www.pc528.net/logo.png";
-
-    let x = Math.random()*(window.innerWidth-100);
-    let y = Math.random()*(window.innerHeight-100);
-    let speedX = 1.2; //横向速度
-    let speedY = 1.0; //纵向速度
-
-    function animateAvatar(){
-        x += speedX;
-        y += speedY;
-        const avatarW = floatAvatar.offsetWidth;
-        const avatarH = floatAvatar.offsetHeight;
-        //边界反弹
-        if(x <=0 || x >= window.innerWidth - avatarW){
-            speedX *= -1;
-        }
-        if(y <=0 || y >= window.innerHeight - avatarH){
-            speedY *= -1;
-        }
-        floatAvatar.style.left = x + "px";
-        floatAvatar.style.top = y + "px";
-        requestAnimationFrame(animateAvatar);
-    }
-    animateAvatar();
-
-    window.addEventListener("resize",()=>{
-        //窗口大小变化防止飞出屏幕
-        const avatarW = floatAvatar.offsetWidth;
-        const avatarH = floatAvatar.offsetHeight;
-        if(x > window.innerWidth - avatarW) x = window.innerWidth - avatarW;
-        if(y > window.innerHeight - avatarH) y = window.innerHeight - avatarH;
-    })
 </script>
 </body>
 </html>
